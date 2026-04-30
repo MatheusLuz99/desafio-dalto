@@ -28,7 +28,7 @@ public class ClientesController {
 
     @PostMapping
     public Clientes criar(@RequestBody Clientes cliente) {
-        return service.Criar(cliente);
+        return service.criar(cliente);
     }
 
     @PutMapping("/{id}")
