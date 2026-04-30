@@ -1,4 +1,4 @@
-package com.desafio.Dalto.demo.controller;
+package com.desafio.Dalto.demo.Banco;
 
 import jakarta.persistence.*;
 
@@ -11,7 +11,7 @@ public class Clientes{
         @Id            // esse é a chave do usuario
         @GeneratedValue(strategy = GenerationType.IDENTITY)         //peço para gerar IDS
 
-        private Long Id;
+        private Long id;
 
         private String nome;
 
@@ -23,17 +23,17 @@ public class Clientes{
         //Getters
 
         public Long getId() {
-            return Id;
+            return id;
         }
         public String getNome() {
            return nome;
         }
-        public String getemail() {
+        public String getEmail() {
             return email;
         }// Essa parte do public vai pegar os dados inseridos pelo usuario e retonar!
 
-        //Setters
 
+    //Setters
 
     public void setNome(String nome) {
         this.nome = nome;
