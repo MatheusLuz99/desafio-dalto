@@ -1,18 +1,23 @@
 package com.desafio.Dalto.demo.Service;
 
 import com.desafio.Dalto.demo.Banco.Clientes;
-import com.desafio.Dalto.demo.Repository.ClientesRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.desafio.Dalto.demo.Banco.ClientesAuditoria;
+import com.desafio.Dalto.demo.Repository.ClientesAuditoriaRepository;
+import com.desafio.Dalto.demo.Repository.ClientsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 
 public class ClientesService {
-    private final ClientesRepository repositorio;
+    @Autowired
+    private ClientesAuditoriaRepository auditoriaRepository;
+    private final ClientsRepository repositorio;
 
-    public ClientesService(ClientesRepository repository) {
+    public ClientesService(ClientsRepository repository) {
         this.repositorio = repository;
     }
 
@@ -36,12 +41,25 @@ public class ClientesService {
         return repositorio.save(c);
     }
 
-    public void Excluir(Long id) {
+    public void excluir(Long id) {
 
-        if (!repositorio.existsById(id)) {
-            throw new EntityNotFoundException("Cliente não encontrado");
-        }
+        Clientes cliente = repositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        repositorio.deleteById(id);
+        // AUDITORIA
+        ClientesAuditoria audit = new ClientesAuditoria();
+        audit.setIdCliente(cliente.getId());
+        audit.setNome(cliente.getNome());
+        audit.setEmail(cliente.getEmail());
+        audit.setDataExcluido(LocalDateTime.now());
+        auditoriaRepository.save(audit);
+
+        // DELETE FINAL
+        repositorio.delete(cliente);
+    }public List<ClientesAuditoria> listarExcluidos() {
+        return auditoriaRepository.findAll();
     }
-}
+    }
+
+
+

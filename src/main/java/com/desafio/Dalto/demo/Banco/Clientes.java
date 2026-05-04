@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = "TBL_CLIENTES")
+@Table(name = "TBL_CLIENTES"  )
 public class Clientes {
 
     //Onde vai pedir os dados para o usuario!

@@ -1,7 +1,9 @@
 package com.desafio.Dalto.demo.Controller;
 
 import com.desafio.Dalto.demo.Banco.Clientes;
+import com.desafio.Dalto.demo.Banco.ClientesAuditoria;
 import com.desafio.Dalto.demo.Service.ClientesService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,9 +37,16 @@ public class ClientesController {
     public Clientes atualizar(@PathVariable Long id, @RequestBody Clientes dados) {
         return service.Atualizar(id, dados);
     }
+    @GetMapping("/excluidos")
+    public ResponseEntity<List<ClientesAuditoria>> listarExcluidos() {
+        List<ClientesAuditoria> lista = service.listarExcluidos();
+        return ResponseEntity.ok(lista);
+    }
 
     @DeleteMapping("/{id}")
     public void excluir(@PathVariable Long id) {
-        service.Excluir(id);
+        service.excluir(id);
+
+
     }
 }
